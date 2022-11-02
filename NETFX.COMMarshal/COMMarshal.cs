@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Excel;
 using RGiesecke.DllExport;
 
 namespace COMMarshal
@@ -22,29 +23,20 @@ namespace COMMarshal
         
         string PropertyA 
         { 
-            [return: MarshalAs(UnmanagedType.BStr)] 
-            get;
-
-            [param: MarshalAs(UnmanagedType.BStr)]
-            set; 
+            [return: MarshalAs(UnmanagedType.BStr)] get;
+            [param: MarshalAs(UnmanagedType.BStr)] set; 
         }
         
         int PropertyB 
         {
-            [return: MarshalAs(UnmanagedType.I4)]
-            get;
-
-            [param: MarshalAs(UnmanagedType.I4)]
-            set; 
+            [return: MarshalAs(UnmanagedType.I4)] get;
+            [param: MarshalAs(UnmanagedType.I4)] set; 
         }
         
         bool PropertyC 
         {
-            [return: MarshalAs(UnmanagedType.Bool)]
-            get;
-
-            [param: MarshalAs(UnmanagedType.Bool)]
-            set;
+            [return: MarshalAs(UnmanagedType.Bool)] get;
+            [param: MarshalAs(UnmanagedType.Bool)] set;
         }
 
         void ArgumentA([In, MarshalAs(UnmanagedType.I4)] int A);
@@ -58,6 +50,8 @@ namespace COMMarshal
         
         [return: MarshalAs(UnmanagedType.I4)]
         int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B);
+
+        void InterfaceMarshal([In, MarshalAs(UnmanagedType.Interface)] Workbook book);
     }
 
     [ComVisible(true)]
@@ -65,103 +59,189 @@ namespace COMMarshal
     [ClassInterface(ClassInterfaceType.AutoDual)]
     public class COMMarshal : ICOMMarshal
     {
-        public string PropertyA 
+        /// <summary>
+        /// A string class property
+        /// </summary>
+        public string PropertyA
         {
-            [return: MarshalAs(UnmanagedType.BStr)]
-            get => throw new NotImplementedException();
-
-            [param: MarshalAs(UnmanagedType.BStr)]
-            set => throw new NotImplementedException();
+            [return: MarshalAs(UnmanagedType.BStr)] get;
+            [param: MarshalAs(UnmanagedType.BStr)] set;
         }
-
-        public int PropertyB 
+        
+        /// <summary>
+        /// A integer class property
+        /// </summary>
+        public int PropertyB
         {
-            [return: MarshalAs(UnmanagedType.I4)]
-            get => throw new NotImplementedException();
-
-            [param: MarshalAs(UnmanagedType.I4)]
-            set => throw new NotImplementedException();
+            [return: MarshalAs(UnmanagedType.I4)] get; 
+            [param: MarshalAs(UnmanagedType.I4)] set;
         }
-
-        public bool PropertyC 
+        
+        /// <summary>
+        /// A boolean class property
+        /// </summary>
+        public bool PropertyC
         {
-            [return: MarshalAs(UnmanagedType.Bool)]
-            get => throw new NotImplementedException();
-
-            [param: MarshalAs(UnmanagedType.Bool)]
-            set => throw new NotImplementedException();
+            [return: MarshalAs(UnmanagedType.Bool)] get;
+            [param: MarshalAs(UnmanagedType.Bool)] set;
         }
-
+        
+        /// <summary>
+        /// A method that takes an integer
+        /// </summary>
+        /// <param name="C"></param>
         public void ArgumentA([In, MarshalAs(UnmanagedType.I4)] int A)
         {
-            throw new NotImplementedException();
+            var a = Math.Pow(A, A);
+            // Do something with a
         }
-
+        
+        /// <summary>
+        /// A method that takes a single precision floating point value
+        /// </summary>
+        /// <param name="C"></param>
         public void ArgumentB([In, MarshalAs(UnmanagedType.R4)] float B)
         {
-            throw new NotImplementedException();
+            var a = Math.Ceiling(B);
+            // Do something with a
         }
-
+        
+        /// <summary>
+        /// A method that takes a double precision floating point value
+        /// </summary>
+        /// <param name="C"></param>
         public void ArgumentC([In, MarshalAs(UnmanagedType.R8)] double C)
         {
-            throw new NotImplementedException();
+            var a = Math.Floor(C);
+            // Do something with a
         }
-
+        
+        /// <summary>
+        /// A method that takes an array of strings
+        /// </summary>
+        /// <param name="E"></param>
         public void ArgumentD([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < D.Length; i++)
+            {
+                // Do some processing with the string array
+            }
         }
-
+        
+        /// <summary>
+        /// A method that takes an array of integers
+        /// </summary>
+        /// <param name="E"></param>
         public void ArgumentE([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < E.Length; i++)
+            {
+                // Do some processing with the integer array
+            }
         }
-
+        
+        /// <summary>
+        /// A method that modifies the contents of the referenced integer array
+        /// </summary>
+        /// <param name="D"></param>
         public void MethodInOutA([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < D.Length; i++)
+            {
+                D[i] = D[i].ToUpper();
+            }
         }
-
+        
+        /// <summary>
+        /// A method that modifies the contents of the referenced integer array
+        /// </summary>
+        /// <param name="E"></param>
         public void MethodInOutB([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < E.Length; i++)
+            {
+                E[i] *= 2;
+            }
         }
-
+        
+        /// <summary>
+        /// A method that takes an integer and returns two integers - one from the return signature and one through the out parameter
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
         [return: MarshalAs(UnmanagedType.I4)]
         public int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B)
         {
             B = A * 2;
             return B * B;
         }
-
+        
+        /// <summary>
+        /// Adds a worksheet to the workbook that called this method
+        /// </summary>
+        /// <code>
+        /// Dim marshaller As COMMarshal
+        /// Set marshaller = New COMMarshal
+        /// marshaller.InterfaceMarshal ThisWorkbook
+        /// </code>
+        /// <param name="book"></param>
+        public void InterfaceMarshal([In, MarshalAs(UnmanagedType.Interface)] Workbook book)
+        {
+            var sheet = book.Sheets.Add() as Worksheet;
+            sheet.Name = "New Worksheet";
+        }
+        
+        /// <summary>
+        /// A simple .NET Method with no arguments and no return types
+        /// </summary>
         public void MethodA()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Hello from VBA");
         }
-
+        
+        /// <summary>
+        /// A method that returns a boolean value
+        /// </summary>
+        /// <returns></returns>
         [return: MarshalAs(UnmanagedType.Bool)]
         public bool MethodB()
         {
-            throw new NotImplementedException();
+            return true;
         }
-
+        
+        /// <summary>
+        /// A method that returns an integer
+        /// </summary>
+        /// <returns></returns>
         [return: MarshalAs(UnmanagedType.I4)]
         public int MethodC()
         {
-            throw new NotImplementedException();
+            return 10;
         }
-
+        
+        /// <summary>
+        /// A method that returns an integer array via out statement
+        /// </summary>
+        /// <param name="a"></param>
         public void MethodD([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] out int[] a)
         {
-            throw new NotImplementedException();
+            a = new[] { 1, 2, 3, 4, 5 };
         }
-
+        
+        /// <summary>
+        /// A method that returns a string array via out statement
+        /// </summary>
+        /// <param name="a"></param>
         public void MethodE([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] a)
         {
-            throw new NotImplementedException();
+            a = new[] { "Hello", "from", "the", "other", "side" };
         }
     }
-
+    
+    /// <summary>
+    /// ComMarshal Factory for creating COMMarshal objects as IDispatch types for consumption within VBA
+    /// </summary>
     public static class COMMarshalFactory 
     {
         [DllExport]
