@@ -4,7 +4,6 @@ using RGiesecke.DllExport;
 
 namespace COMMarshal
 {
-
     [ComVisible(true)]
     [Guid("0e4d4d37-4edd-4ac6-80ce-ca7bc67a4238")]
     [InterfaceType(ComInterfaceType.InterfaceIsDual)]
@@ -56,6 +55,9 @@ namespace COMMarshal
         void ArgumentC([In, MarshalAs(UnmanagedType.R8)] double C);
         void ArgumentD([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D);
         void ArgumentE([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E);
+        
+        [return: MarshalAs(UnmanagedType.I4)]
+        int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B);
     }
 
     [ComVisible(true)]
@@ -113,6 +115,13 @@ namespace COMMarshal
         public void ArgumentE([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E)
         {
             throw new NotImplementedException();
+        }
+        
+        [return: MarshalAs(UnmanagedType.I4)]
+        public int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B)
+        {
+            B = A * 2;
+            return B * B;
         }
 
         public void MethodA()
