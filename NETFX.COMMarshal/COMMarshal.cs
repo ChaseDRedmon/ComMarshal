@@ -17,11 +17,8 @@ namespace COMMarshal
         [return: MarshalAs(UnmanagedType.I4)]
         int MethodC();
 
-        [return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)]
-        ref int[] MethodD();
-
-        [return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)]
-        ref string[] MethodE();
+        void MethodD([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] out int[] a);
+        void MethodE([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] a);
         
         string PropertyA 
         { 
@@ -55,6 +52,9 @@ namespace COMMarshal
         void ArgumentC([In, MarshalAs(UnmanagedType.R8)] double C);
         void ArgumentD([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D);
         void ArgumentE([In, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E);
+        
+        void MethodInOutA([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D);
+        void MethodInOutB([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E);
         
         [return: MarshalAs(UnmanagedType.I4)]
         int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B);
@@ -116,7 +116,17 @@ namespace COMMarshal
         {
             throw new NotImplementedException();
         }
-        
+
+        public void MethodInOutA([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] ref string[] D)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MethodInOutB([In, Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] ref int[] E)
+        {
+            throw new NotImplementedException();
+        }
+
         [return: MarshalAs(UnmanagedType.I4)]
         public int MethodOutA([In, MarshalAs(UnmanagedType.I4)] int A, [Out, MarshalAs(UnmanagedType.I4)] out int B)
         {
@@ -141,14 +151,12 @@ namespace COMMarshal
             throw new NotImplementedException();
         }
 
-        [return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)]
-        public ref int[] MethodD()
+        public void MethodD([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_I4)] out int[] a)
         {
             throw new NotImplementedException();
         }
 
-        [return: MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)]
-        public ref string[] MethodE()
+        public void MethodE([Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] a)
         {
             throw new NotImplementedException();
         }
